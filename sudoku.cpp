@@ -56,7 +56,7 @@ const bool Sudoku::isValidCol(int x, int y, int v) {
 }
 
 bool const Sudoku::isValidBox(int x, int y, int v) {
-	int box, r, c; 
+	int r, c; 
 	
 	r = 3 * (x / 3);
 	c = 3 * (y / 3);
@@ -68,6 +68,33 @@ bool const Sudoku::isValidBox(int x, int y, int v) {
 	}
 	return true; 
 
+}
+
+
+bool const Sudoku::solve() {
+	for (int i = 0; i < SIZE; i++) {
+		for (int j = 0; j < SIZE; j++) {
+			if (grid[i][j] == 0) {
+				for (int k = 1; k <= SIZE; k++) {
+					if (isValid(i, j, k))
+						grid[i][k] = k;
+					if (solve())
+						return true;
+					else
+						grid[i][j] = 0;
+				}
+				return false;
+			}
+		}
+	}
+	return true; 
+}
+
+bool const Sudoku::isValid(int x, int y, int v) {
+	if (isValidBox(x, y, v) && isValidCol(x, y, v) && isValidRow(x, y, v)) {
+		return true;
+	}
+	return false;
 }
 
 	
